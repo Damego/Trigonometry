@@ -26,7 +26,7 @@ class Main(tk.Frame):
                                  bg = "#246de8", fg="white",
                                  font="Arial 16",
                                  command=lambda: self.application(1))
-      self.start1.place(x = 150, y = 100)
+      self.start1.place(x = 150, y = 50)
 
       self.start2 = tk.Button(root,
                                  text="Отрицательные числа",
@@ -34,7 +34,7 @@ class Main(tk.Frame):
                                  bg = "#246de8", fg="white",
                                  font="Arial 16",
                                  command=lambda: self.application(2))
-      self.start2.place(x = 150, y = 200)
+      self.start2.place(x = 150, y = 150)
 
       self.start3 = tk.Button(root,
                                  text="Координаты",
@@ -42,7 +42,7 @@ class Main(tk.Frame):
                                  bg = "#246de8", fg="white",
                                  font="Arial 16",
                                  command=lambda: self.application(3))
-      self.start3.place(x = 200, y = 300)
+      self.start3.place(x = 200, y = 250)
 
       self.start4 = tk.Button(root,
                                  text="Все числа",
@@ -50,7 +50,7 @@ class Main(tk.Frame):
                                  bg = "#246de8", fg="white",
                                  font="Arial 16",
                                  command=lambda: self.application(4))
-      self.start4.place(x = 200, y = 400)
+      self.start4.place(x = 200, y = 350)
 
 
 
@@ -69,19 +69,19 @@ class Main(tk.Frame):
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn1.place(x = 480, y = 200)
+      self.btn1.place(x = 475, y = 200)
 
       self.btn2 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn2.place(x = 450, y = 100)
+      self.btn2.place(x = 445, y = 95)
 
       self.btn3 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn3.place(x = 400, y = 50)
+      self.btn3.place(x = 405, y = 50)
 
       self.btn4 = tk.Button(root,
                                  text="",
@@ -93,25 +93,25 @@ class Main(tk.Frame):
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn5.place(x = 250, y = 5)
+      self.btn5.place(x = 260, y = 3)
 
       self.btn6 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn6.place(x = 150, y = 25)
+      self.btn6.place(x = 160, y = 25)
 
       self.btn7 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn7.place(x = 120, y = 50)
+      self.btn7.place(x = 115, y = 55)
 
       self.btn8 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn8.place(x = 80, y = 100)
+      self.btn8.place(x = 80, y = 97)
 
       self.btn9 = tk.Button(root,
                                  text="",
@@ -123,43 +123,43 @@ class Main(tk.Frame):
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn10.place(x = 80, y = 300)
+      self.btn10.place(x = 80, y = 305)
 
       self.btn11 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn11.place(x = 120, y = 350)
+      self.btn11.place(x = 110, y = 350)
 
       self.btn12 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn12.place(x = 150, y = 400)
+      self.btn12.place(x = 150, y = 395)
 
       self.btn13 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn13.place(x = 250, y = 420)
+      self.btn13.place(x = 260, y = 420)
 
       self.btn14 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn14.place(x = 370, y = 400)
+      self.btn14.place(x = 370, y = 395)
 
       self.btn15 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn15.place(x = 400, y = 350)
+      self.btn15.place(x = 410, y = 345)
 
       self.btn16 = tk.Button(root,
                                  text="",
                                  width=2, height=1,
                                  bg = "white")
-      self.btn16.place(x = 450, y = 300)
+      self.btn16.place(x = 450, y = 295)
 
       self.play = tk.Button(root,
                                  text="Начать",
@@ -167,6 +167,9 @@ class Main(tk.Frame):
                                  bg = "#246de8", fg="white",
                                  font="Arial 16")
       self.play.place(x = 300, y = 440)
+
+      self.btn_back = tk.Button(root, text = "<", font = "Arial 16", command = self.clickedBtnBack)
+      self.btn_back.place(relx = 0.01, rely = 0.01)
 
 
    def application(self, typeList):
@@ -182,9 +185,7 @@ class Main(tk.Frame):
          self.list = self.coordsNums
          self.play['command'] = lambda: self.newNum(3)
       elif typeList == 4:
-         self.newNum(4)
          self.play['command'] = lambda: self.newNum(4)
-         self.list = self.preRes
          
          
       self.btn1['command'] = lambda: self.check(self.list[0])
@@ -221,6 +222,36 @@ class Main(tk.Frame):
       self.ex['text'] = self.res
       self.play['text'] = "Новое число"
       self.ex['fg'] = 'black'
+
+
+
+   def clickedBtnBack(self):
+      self.btn_back.place_forget()
+      self.btn1.place_forget()
+      self.btn2.place_forget()
+      self.btn3.place_forget()
+      self.btn4.place_forget()
+      self.btn5.place_forget()
+      self.btn6.place_forget()
+      self.btn7.place_forget()
+      self.btn8.place_forget()
+      self.btn9.place_forget()
+      self.btn10.place_forget()
+      self.btn11.place_forget()
+      self.btn12.place_forget()
+      self.btn13.place_forget()
+      self.btn14.place_forget()
+      self.btn15.place_forget()
+      self.btn16.place_forget()
+      self.ex.place_forget()
+      self.play.place_forget()
+      self.initil.forget()
+
+      self.start1.place(x = 150, y=50)
+      self.start2.place(x = 150, y=150)
+      self.start3.place(x = 200, y=250)
+      self.start4.place(x = 200, y=350)
+
 
 
 
