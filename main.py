@@ -1,8 +1,9 @@
 import tkinter as tk
+from tkinter import ttk
 from PIL import Image, ImageTk
 import random
 
-class Main(tk.Frame):
+class Main(ttk.Frame):
    def __init__(self):
       super().__init__()
 
@@ -14,12 +15,35 @@ class Main(tk.Frame):
       render = ImageTk.PhotoImage(img)
       self.initil = tk.Label(root, image=render)
       self.initil.image = render
-      self.mainMenu()
+
+      self.startMenu()
         
-        
+
+   def startMenu(self):
+      self.startFreeModeBtn = tk.Button(root,
+                                 text="Работа с кругом",
+                                 width=20, height=2,
+                                 bg = "#246de8", fg="white",
+                                 font="Arial 16",
+                                 command=self.mainMenu)
+      self.startFreeModeBtn.place(x = 150, y = 50)
+
+      self.startExamModeBtn = tk.Button(root,
+                                 text="Работа без круга",
+                                 width=20, height=2,
+                                 bg = "#246de8", fg="white",
+                                 font="Arial 16",
+                                 command=self.examMenu)
+      self.startExamModeBtn.place(x = 150, y = 150)
+
+
+   def forgetStartMenu(self):
+      self.startFreeModeBtn.place_forget()
+      self.startExamModeBtn.place_forget()
 
 
    def mainMenu(self):
+      self.forgetStartMenu()
       self.start1 = tk.Button(root,
                                  text="Положительные числа",
                                  width=20, height=2,
@@ -61,8 +85,17 @@ class Main(tk.Frame):
       self.start4.place_forget()
 
       self.initil.pack()
-      self.ex = tk.Label(root, text="", font="Arial 20")
-      self.ex.place(x = 38, y = 440)
+      self.currentExercise = tk.Label(root, text="", font="Arial 20")
+      self.currentExercise.place(x = 150, y = 450)
+
+      self.allExercisesLabel = tk.Label(root, text="Всего примеров: ", font="Arial 8")
+      self.allExercisesLabel.place(x = 38, y = 440)
+
+      self.successExercisesLabel = tk.Label(root, text="Правильных: ", font="Arial 8")
+      self.successExercisesLabel.place(x = 38, y = 460)
+
+      self.wrongExercisesLabel = tk.Label(root, text="Ошибок: ", font="Arial 8")
+      self.wrongExercisesLabel.place(x = 38, y = 480)
 
 
       self.btn1 = tk.Button(root,
@@ -161,32 +194,35 @@ class Main(tk.Frame):
                                  bg = "white")
       self.btn16.place(x = 450, y = 295)
 
-      self.play = tk.Button(root,
+      self.newNumButton = tk.Button(root,
                                  text="Начать",
                                  width=10, height=1,
                                  bg = "#246de8", fg="white",
                                  font="Arial 16")
-      self.play.place(x = 300, y = 440)
+      self.newNumButton.place(x = 300, y = 440)
 
-      self.btn_back = tk.Button(root, text = "<", font = "Arial 16", command = self.clickedBtnBack)
+      self.btn_back = tk.Button(root, text = "<", font = "Arial 16", command = self.pressedButtonBack)
       self.btn_back.place(relx = 0.01, rely = 0.01)
 
 
    def application(self, typeList):
+      self.quantityExercises = 0
+      self.successQuantityExercises = 0
+      self.wrongQuantityExercises = 0
+      self.addSuccesfulExercice = 0
       self.createCircle()
 
       if typeList == 1:
          self.list = self.positiveNums
-         self.play['command'] = lambda: self.newNum(1)
+         self.newNumButton['command'] = lambda: self.newNum(1)
       elif typeList == 2:
          self.list = self.negativeNums
-         self.play['command'] = lambda: self.newNum(2)
+         self.newNumButton['command'] = lambda: self.newNum(2)
       elif typeList == 3:
          self.list = self.coordsNums
-         self.play['command'] = lambda: self.newNum(3)
+         self.newNumButton['command'] = lambda: self.newNum(3)
       elif typeList == 4:
-         self.play['command'] = lambda: self.newNum(4)
-         
+         self.newNumButton['command'] = lambda: self.newNum(4)
          
       self.btn1['command'] = lambda: self.check(self.list[0])
       self.btn2['command'] = lambda: self.check(self.list[1])
@@ -205,27 +241,37 @@ class Main(tk.Frame):
       self.btn15['command'] = lambda: self.check(self.list[14])
       self.btn16['command'] = lambda: self.check(self.list[15])
 
-   def check(self, pos):
-      if pos == self.res:
-         self.ex['fg'] = 'green'
+
+   def check(self, position):
+      if position == self.result:
+         self.currentExercise['fg'] = 'green'
+         self.addSuccesfulExercice = 1
       else:
-         self.ex['fg'] = 'red'
+         self.currentExercise['fg'] = 'red'
+         self.wrongQuantityExercises += 1
+         self.wrongExercisesLabel['text'] = f"Ошибок: {self.wrongQuantityExercises}"
+
 
    def newNum(self,typeList):
       if typeList == 4:
          all_nums = [self.positiveNums,self.negativeNums,self.coordsNums]
-         self.preRes = random.choice(all_nums)
-         self.res = random.choice(self.preRes)
-         self.list = self.preRes
+         self.preResult = random.choice(all_nums)
+         self.result = random.choice(self.preResult)
+         self.list = self.preResult
       else:
-         self.res = random.choice(self.list)
-      self.ex['text'] = self.res
-      self.play['text'] = "Новое число"
-      self.ex['fg'] = 'black'
+         self.result = random.choice(self.list)
+      self.currentExercise['text'] = self.result
+      self.newNumButton['text'] = "Новое число"
+      self.currentExercise['fg'] = 'black'
+      self.quantityExercises += 1
+      self.allExercisesLabel['text'] = f"Всего примеров: {self.quantityExercises}"
+
+      if self.addSuccesfulExercice == 1:
+         self.successQuantityExercises += 1
+         self.successExercisesLabel['text'] = f"Правильных: {self.successQuantityExercises}"
 
 
-
-   def clickedBtnBack(self):
+   def pressedButtonBack(self):
       self.btn_back.place_forget()
       self.btn1.place_forget()
       self.btn2.place_forget()
@@ -243,14 +289,107 @@ class Main(tk.Frame):
       self.btn14.place_forget()
       self.btn15.place_forget()
       self.btn16.place_forget()
-      self.ex.place_forget()
-      self.play.place_forget()
+      self.currentExercise.place_forget()
+      self.newNumButton.place_forget()
       self.initil.forget()
+      self.allExercisesLabel.place_forget()
+      self.successExercisesLabel.place_forget()
+      self.wrongExercisesLabel.place_forget()
 
-      self.start1.place(x = 150, y=50)
-      self.start2.place(x = 150, y=150)
-      self.start3.place(x = 200, y=250)
-      self.start4.place(x = 200, y=350)
+      self.quantityExercises = 0
+      self.successQuantityExercises = 0
+      self.wrongQuantityExercises = 0
+      self.addSuccesfulExercice = 0
+
+      self.start1.place(x = 150, y = 50)
+      self.start2.place(x = 150, y = 150)
+      self.start3.place(x = 200, y = 250)
+      self.start4.place(x = 200, y = 350)
+
+
+# Second Menu
+   def examMenu(self):
+      self.forgetStartMenu()
+
+      style = ttk.Style(root)
+      style.configure("TButton", width = 10, font = "Arial 12")
+      style.configure("TCombobox", font = "Arial 12")
+
+      
+
+
+      self.combobox = ttk.Combobox(root, width=15, height = 20, font = "Arial 12", style = "TCombobox")
+      self.combobox['values'] = self.positiveNums
+      self.combobox.place(x = 100, y = 100)
+
+      self.checkButton = ttk.Button(root, text = "Проверить", command = self.check2)
+      self.checkButton.place(x = 300, y = 100)
+
+      self.JustLabel = ttk.Label(root, text = "", font = "Arial 12")
+      self.JustLabel.place(x = 10, y = 100)
+
+      self.allExercisesLabel = ttk.Label(root, text = "Всего примеров:", font = "Arial 12")
+      self.allExercisesLabel.place(x = 10, y = 250)
+      self.quantityExercises = 0
+
+      self.successExercisesLabel = ttk.Label(root, text = "Правильных:", font = "Arial 12")
+      self.successExercisesLabel.place(x = 10, y = 275)
+      self.successQuantityExercises = 0
+
+      self.wrongExercisesLabel = ttk.Label(root, text = "Ошибок:", font = "Arial 12")
+      self.wrongExercisesLabel.place(x = 10, y = 300)
+      self.wrongQuantityExercises = 0
+
+      self.button = ttk.Button(root, text = "Новое число ", style = "TButton", command = self.newNum2)
+      self.button.place(x = 350, y = 400)
+
+
+   def newNum2(self):
+      self.answerID = random.randint(0,15)
+      self.list = self.coordsNums
+      self.question = self.list[self.answerID]
+      self.compAnswer = self.positiveNums[self.answerID]
+      self.JustLabel['text'] = self.question
+      self.quantityExercises += 1
+      self.allExercisesLabel['text'] = f"Всего примеров: {self.quantityExercises}"
+      
+
+   def check2(self):
+      self.userAnswer = self.combobox.get()
+      if self.compAnswer == self.userAnswer:
+         self.successQuantityExercises += 1
+         self.successExercisesLabel['text'] = f"Правильных: {self.successQuantityExercises}"
+         self.newNum2()
+      else:
+         self.wrongQuantityExercises += 1
+         self.wrongExercisesLabel['text'] = f"Ошибок: {self.wrongQuantityExercises}"
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -260,9 +399,5 @@ if __name__ == "__main__":
    root.title("Тригонометрия")
    root.geometry("550x500+700+300")
    root.resizable(False, False)
-
-   
-
    app = Main()
-
    root.mainloop()
